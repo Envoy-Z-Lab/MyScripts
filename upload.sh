@@ -14,7 +14,7 @@ read -p "Please enter your number: " UP
 read -p "Please enter file path/name: " FP
 
 if [ $UP == 1 ]; then
-    read -p "Please enter github repo link: " GH
+    GH="https://github.com/Envoy-Z-Lab/Releases"
     FN="$(basename $FP)" && FN="${FN%%.*}"
     TAG="GenesisOS-Enchilada"
     echo -e "Started uploading file on github..."
