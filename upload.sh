@@ -14,11 +14,12 @@ read -p "Please enter your number: " UP
 read -p "Please enter file path/name: " FP
 
 if [ $UP == 1 ]; then
-read -p "Please enter github repo link: " GH
-FN="$(basename $FP)" && FN="${FN%%.*}"
-echo -e "Started uploading file on github..."
-gh release create $FN --generate-notes --repo $GH
-gh release upload --clobber $FN $FP --repo $GH
+    read -p "Please enter github repo link: " GH
+    FN="$(basename $FP)" && FN="${FN%%.*}"
+    TAG="GenesisOS-Enchilada"
+    echo -e "Started uploading file on github..."
+    gh release create $TAG --generate-notes --repo $GH
+    gh release upload --clobber $TAG $FP --repo $GH
 fi
 
 if [ $UP == 2 ]; then
