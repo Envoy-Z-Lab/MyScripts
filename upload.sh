@@ -16,7 +16,7 @@ read -p "Please enter file path/name: " FP
 if [ $UP == 1 ]; then
     GH="https://github.com/Envoy-Z-Lab/Releases" 
     FN="$(basename $FP)" && FN="${FN%%.*}"
-    TAG="GenesisOS-Fajita"
+    TAG="Derpfest-Fajita"
     echo -e "Started uploading file on github..."
     gh release create $TAG --generate-notes --repo $GH
     gh release upload --clobber $TAG $FP --repo $GH
