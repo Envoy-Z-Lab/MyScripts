@@ -1,45 +1,35 @@
 #!/usr/bin/env bash
 #
-# Upload Files
+# Script to upload files to GitHub
 #
 
-echo " "
-echo "[1] Github Release [gh auth login]
-[2] Devuploads [Key]
-[3] Temp.sh
-[4] Gofile
-[5] oshi.at
-"
-read -p "Please enter your number: " UP
-read -p "Please enter file path/name: " FP
+# Define the paths to the files that need to be uploaded
+FILES=(
+    "out/target/product/enchilada/boot.img"
+    "out/target/product/enchilada/dtbo.img"
+    "out/target/product/enchilada/super_empty.img"
+    "out/target/product/enchilada/vbmeta.img"
+)
 
-if [ $UP == 1 ]; then
-    GH="https://github.com/Envoy-Z-Lab/Releases"
-    FN="$(basename $FP)" && FN="${FN%%.*}"
-    TAG="EvolutionXYZ-Enchilada"
-    echo -e "Started uploading file on github..."
+# Prompt the user to input the path to the ROM ZIP file
+read -p "Please enter the path to the ROM ZIP: " ROM_ZIP_PATH
+
+# GitHub repository information
+GH="https://github.com/Envoy-Z-Lab/Releases"
+TAG="EvolutionXYZ-Enchilada"
+
+# Function to upload a file to GitHub
+upload_file() {
+    local FP=$1
+    echo -e "Uploading $FP to GitHub..."
     gh release create $TAG --generate-notes --repo $GH
     gh release upload --clobber $TAG $FP --repo $GH
-fi
+}
 
-if [ $UP == 2 ]; then
-read -p "Please enter devupload key: " KEY
-echo -e "Started uploading file on DevUploads..."
-bash <(curl -s https://devuploads.com/upload.sh) -f $FP -k $KEY
-fi
+# Iterate over each file in the FILES array and upload it
+for file in "${FILES[@]}"; do
+    upload_file $file
+done
 
-if [ $UP == 3 ]; then
-echo -e "Started uploading file on Temp..."
-curl -T $FP temp.sh
-fi
-
-if [ $UP == 4 ]; then
-echo -e "Started uploading file on Gofile..."
-SERVER=$(curl -X GET 'https://api.gofile.io/servers' | grep -Po '(store*)[^"]*' | tail -n 1)
-curl -X POST https://${SERVER}.gofile.io/contents/uploadfile -F "file=@$FP" | grep -Po '(https://gofile.io/d/)[^"]*'
-fi
-
-if [ $UP == 5 ]; then
-echo -e "Started uploading file on Oshi.at..."
-curl -T $FP https://oshi.at
-fi
+# Upload the ROM ZIP file
+upload_file $ROM_ZIP_PATH
